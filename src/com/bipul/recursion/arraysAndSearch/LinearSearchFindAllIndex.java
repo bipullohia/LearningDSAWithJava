@@ -1,7 +1,6 @@
-package com.bipul.recursion.arrays;
+package com.bipul.recursion.arraysAndSearch;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class LinearSearchFindAllIndex {
     public static void main(String[] args) {

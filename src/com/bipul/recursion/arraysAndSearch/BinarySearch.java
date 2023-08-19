@@ -1,4 +1,4 @@
-package com.bipul.recursion;
+package com.bipul.recursion.arraysAndSearch;
 
 public class BinarySearch {
 

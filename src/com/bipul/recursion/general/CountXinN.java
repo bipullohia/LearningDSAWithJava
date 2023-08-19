@@ -1,6 +1,6 @@
-package com.bipul.recursion;
+package com.bipul.recursion.general;
 
-public class countXinN {
+public class CountXinN {
     public static void main(String[] args) {
         int n = 30204;
         int x = 0;

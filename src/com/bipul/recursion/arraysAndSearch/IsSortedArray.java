@@ -1,4 +1,4 @@
-package com.bipul.recursion.arrays;
+package com.bipul.recursion.arraysAndSearch;
 
 public class IsSortedArray {
     public static void main(String[] args) {

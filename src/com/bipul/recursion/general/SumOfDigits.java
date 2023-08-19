@@ -1,4 +1,4 @@
-package com.bipul.recursion;
+package com.bipul.recursion.general;
 
 public class SumOfDigits {
     public static void main(String[] args) {
