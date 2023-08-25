@@ -1,4 +1,4 @@
-package com.bipul.subsets;
+package com.bipul.subset;
 
 import java.util.ArrayList;
 import java.util.HashMap;

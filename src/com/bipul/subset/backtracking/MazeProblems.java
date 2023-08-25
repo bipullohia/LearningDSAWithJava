@@ -1,4 +1,4 @@
-package com.bipul.subsets;
+package com.bipul.subset.backtracking;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +22,7 @@ public class MazeProblems {
         printMatrixAndPathsAllDirection(maze, 0, 0, 2, 2, new ArrayList<>(), matrixToPrint, 1);
     }
 
-    //**Good ques to understand concepts/fundamentals**
+    //** Good ques to understand concepts/fundamentals of BACKTRACKING **
     //movements to all the 4 directions allowed (not diagonal);
     static void printAllDirectionPaths(boolean[][] maze, int startRow, int startCol, int targetRow, int targetCol, List<String> path){
         if(startRow == targetRow && startCol == targetCol){

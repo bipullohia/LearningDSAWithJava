@@ -1,7 +1,6 @@
-package com.bipul.subsets;
+package com.bipul.subset;
 
 import java.util.ArrayList;
-import java.util.List;
 
 //printing all the subsets of the array
 public class PermutationSubsequences {
