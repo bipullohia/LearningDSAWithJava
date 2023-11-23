@@ -4,6 +4,7 @@ public class SinglyLinkedList {
 
     private Node head;
     private int size;
+    private Node tail;
 
     public SinglyLinkedList() {
         this.size = 0;
@@ -13,14 +14,242 @@ public class SinglyLinkedList {
         return this.size;
     }
 
-    public void sortByMergeSort(SinglyLinkedList sll){
-        sll.head = mergeSort(sll.head);
+    public void reverse(SinglyLinkedList sll, String reverseType, int left, int right){
+        if(reverseType.equalsIgnoreCase("recursiveWithTail")){
+            recursiveReversalWithTail(this.head);
+        }else if(reverseType.equalsIgnoreCase("recursiveWithoutTail")){
+            Node tail = recursiveReversalWithoutTail(this.head);
+            System.out.println("Tail value: " + tail.value);
+        }else if(reverseType.equalsIgnoreCase("recursiveIteration")){
+            reverseIteration(this.head);
+        }else if(reverseType.equalsIgnoreCase("reverseItrLimits")){
+            reverseIteration(this.head, left, right);
+        }
+    }
+
+    private void reverseIteration(Node node){
+        if(node == null) return; //node here refers to head
+
+        Node prev = null;
+        Node current = node;
+        Node next = current.next;
+
+        while(current != null){
+            current.next = prev;
+            prev = current;
+            current = next;
+            if(next != null)
+                next = next.next;
+        }
+        this.head = prev; //since current is null, prev will be the last element
+    }
+
+    private void reverseIteration(Node node, int left, int right){
+        if(node == null || left == right) return; //node here refers to head
+
+        Node leftMinus1 = null; //just before sublist start. Caution: This can be head too
+        Node newEnd = null; //start of the new Sublist from left side (becomes end in new reversed list)
+        Node newStart = null; //taken for clarity of understanding
+        Node rightPlus1 = null; //taken for clarity of understanding
+
+        Node prev = null;
+        Node current = node;
+        Node next = current.next;
+        int position = 1; //position corresponds to current node
+
+        while(current != null){
+
+            //skipping the first n-1 nodes - WE CAN USE FOR LOOP (and avoid the above while loop by giving that as condition too in for loop)
+            if(position < left){
+                position++;
+                prev = current;
+                current = next;
+                if(next != null)
+                    next = next.next;
+                continue;
+            }
+
+            if(position == left){
+                leftMinus1 = prev; //this denotes the end of untouched LL (from where the inverted list will join once complete)
+                newEnd = current;
+                prev = null;
+            }
+
+            //reverse the sublist (can use for loop here by using current != null and left/right int variables for conditions)
+            if(position <= right){
+                current.next = prev;
+                prev = current;
+                current = next;
+                if(next != null)
+                    next = next.next;
+                position++;
+                continue;
+            }
+
+            //these two needn't be assigned to a new variable. Done here for clarity
+            rightPlus1 = current;
+            newStart = prev;
+            break;
+        }
+
+        if(leftMinus1 != null){
+            //this means that the linked list reverse left position is given as 1
+            leftMinus1.next = newStart;
+        }else{
+            this.head = newStart;
+        }
+        newEnd.next = rightPlus1;
+
+        //Things can get a lot simpler if we use for loop instead of while in above implementation
+    }
+
+    //assuming we have a tail given in the structure
+    private void recursiveReversalWithTail(Node node){
+        if(node == tail){
+            head = tail;
+            return;
+        }
+
+        //we want to traverse till the end of the list
+        recursiveReversalWithTail(node.next);
+
+        //while returning we want to perform these actions (reversing the links of the node)
+        tail.next = node; //this node will be of 1 element before tail
+        tail = node; //we move tail by 1 place earlier
+        tail.next = null; //this line is important for the new tail in the end (since if we don't write this - the tail will never point to null and it becomes a cyclic LL)
+    }
+
+    //assuming we don't have a tail given in the structure
+    private Node recursiveReversalWithoutTail(Node node){
+        Node prev; //this is to maintain a previous node while coming back (tail node does this job if present)
+        if(node.next == null){
+            head = node;
+            return head;
+        }
+
+        //we want to traverse till the end of the list
+        prev = recursiveReversalWithoutTail(node.next);
+
+        //while returning we want to perform these actions (reversing the links of the node)
+        prev.next = node; //this node will be of 1 element before prev
+        prev = node; //we move prev by 1 place earlier
+        prev.next = null; //this line is important for the new tail in the end (since if we don't write this - the tail (prev here) will never point to null and it becomes a cyclic LL)
+        return prev; //this will act like a tail in a way
+    }
+
+    public void sort(SinglyLinkedList sll, String sortType){
+        if(sortType.equalsIgnoreCase("merge"))
+            sll.head = mergeSort(sll.head);
+        else if(sortType.equalsIgnoreCase("bubbleItr"))
+            sll.head = bubbleSortIterative(sll.head);
+        else if(sortType.equalsIgnoreCase("bubbleRecr")){
+            int length = lengthOfLL(head); //very inefficient- better to have a size maintained
+            System.out.println("Length of LL: " + length);
+            bubbleSortRecursive(length-1, 0);
+        }
+        else
+            System.out.println("Wrong sortType given. Possible options: 'merge', 'bubble'");
+    }
+
+    public void bubbleSortRecursive(int row, int col){
+        if(row == 0) return; //base condition
+
+        if(row > col){
+            Node first = getNode(col);
+            Node second = getNode(col+1);
+
+            if(first.value > second.value){
+                //swap - 3 conditions
+
+                //if it's start of the list (first 2 elements)
+                if(first == head){
+                    head = second;
+                    first.next = second.next;
+                    second.next = first;
+                }
+                else if(second == tail){ //if it's end of the list (last 2 elements)
+                    Node prev = getNode(col-1);
+                    prev.next = first.next;
+                    second.next = first;
+                    first.next = null;
+                    tail = first;
+                }
+                else{ //if it's midway
+                    Node prev = getNode(col-1);
+                    prev.next = first.next;
+                    first.next = second.next;
+                    second.next = first;
+                }
+            }
+            //calling recursively to exxecute other cols of this iteration (row)
+            bubbleSortRecursive(row, col+1);
+        }else{
+            //the iteration for the row is done, moving on to the next iteration
+            bubbleSortRecursive(row-1, 0);
+        }
+    }
+
+    //not to be exposed
+    private Node getNode(int index){
+        Node temp = this.head;
+        for (int i = 0; i < index; i++) {
+            temp = temp.next;
+        }
+        return temp;
+    }
+
+    //retry again after few days
+    private Node bubbleSortIterative(Node head){
+        if(head == null || head.next == null) return head; //0 or 1 elements - already sorted
+
+        int length = lengthOfLL(head); //very inefficient- this step - unless we maintain a size
+        System.out.println("Length of LL: " + length);
+
+        for (int i = 0; i < length-1; i++) {
+            Node current = head;
+            Node prev = null;
+            while(current != null && current.next != null){
+                if(current.value > current.next.value){
+                    //swap the nodes
+                    if(prev != null)
+                        prev.next = current.next;
+                    else
+                        head = current.next;
+
+                    prev = current.next;
+                    current.next = current.next.next;
+                    prev.next = current;
+                }else{
+                    prev = current;
+                    current = current.next;
+                }
+            }
+        }
+        display(head);
+        return head;
+    }
+
+    private int lengthOfLL(Node head){
+        int len = 0;
+        while(head != null){
+            len++;
+            head = head.next;
+        }
+        return len;
+    }
+
+    private void display(Node head){
+        while(head != null){
+            System.out.print(head.value + " -> ");
+            head = head.next;
+        }
+        System.out.print("END\n");
     }
 
     private Node mergeSort(Node head){
         if(head == null || head.next == null) return head; //base case - 0 or 1 elements - already sorted
 
-        Node mid = getMiddleNodeOfLinkedList(head);
+        Node mid = getMid(head);
         Node left = mergeSort(head);
         Node right = mergeSort(mid);
         return mergeTwoSortedLinkedLists(left, right);
@@ -58,28 +287,13 @@ public class SinglyLinkedList {
         return mergedHead;
     }
 
-    //returns the middle node of a LinkedList
-    private Node getMiddleNodeOfLinkedList(Node head){
-        Node fast = head;
-        Node slow = head;
-
-        while(fast != null && fast.next != null){
-            fast = fast.next.next;
-            slow = slow.next;
-        }
-
-        Node node = slow.next; //returning the one after middle and using the middle node to break the chain
-        slow.next = null;
-        return node;
-    }
-
     private Node getMid(Node head){
         Node prevMid = null;
         while(head != null && head.next != null){
-            prevMid = (prevMid == null) ? head : prevMid.next;
+            prevMid = (prevMid == null) ? head : prevMid.next; //this will put prevMid as head after first while check/iteration. As slow pointer this would be an element ahead. Hence prevMid (since it's one pointer before) - it will point to 1 element before mid
             head = head.next.next;
         }
-        Node mid = prevMid.next;
+        Node mid = prevMid.next; //if there is one element in the list, only then prevMid will remain null - that won't happen since calling func is check in this case
         prevMid.next = null;
         return mid;
     }
@@ -270,6 +484,21 @@ public class SinglyLinkedList {
         sll.head.next.next.next.next.next.next.next.next = sll.head.next.next;
         sll.size = 5;
         return sll;
+    }
+
+    //write a demo LL with a tail
+    public SinglyLinkedList getListWithTail(){
+        this.head = new Node(12);
+        this.head.next = new Node(14);
+        this.head.next.next = new Node(16);
+        this.head.next.next.next = new Node(18);
+        this.head.next.next.next.next = new Node(20);
+        this.head.next.next.next.next.next = new Node(22);
+
+        this.tail = this.head.next.next.next.next.next;
+        this.size = 6;
+        display(this.head);
+        return this;
     }
 
     //The Node class containing the structure of each node
