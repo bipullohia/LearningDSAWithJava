@@ -14,6 +14,87 @@ public class SinglyLinkedList {
         return this.size;
     }
 
+    //We are given a list - L0, L1, L2 .. LN. We have to rearrange it to L0, LN, L1, L(N-1), L2, L(N-2)...
+    public void reOrderList(){
+        if(head == null || head.next == null || head.next.next == null) return; //no need for reorder for 1, 2 or 3 elements
+
+        //1. Getting the prevMid (we want to get the mid and setPrevMid as null for further logic)
+        Node prevMid = getPrevMid(head);
+
+        Node temp1 = head; //will contain the list from start until prevMid
+        Node temp2 = prevMid.next; //will contain the reveresed list from end until mid
+        prevMid.next = null; //to separate it from the second list
+
+        //reverse the second half of the list from mid
+        temp2 = reverseIterationWithReturn(temp2);
+        Node newList = null; //contains the head of new merged list
+        head = null;
+
+        while(temp1 != null && temp2 != null){
+            //setting 1 element from first half of the LL
+            if(newList == null){ //to check for the first iteration of the while loop
+                newList = new Node(temp1.value);
+                if(head == null) head = newList; //this is to mark the head with the first node of the newList
+            }else {
+                newList.next = new Node(temp1.value);
+                newList = newList.next;
+            }
+
+            newList.next = new Node(temp2.value);  //setting 1 element from second half of the LL
+            newList = newList.next;
+            temp1 = temp1.next;
+            temp2 = temp2.next;
+        }
+
+        //populating any remaining element from one of the list (only 1 element in either of the list be present in case of an odd numbered LL)
+        //newList won't be null because we ensure atleast 3 elements are there in the LL provided - hence it will enter the while loop written earlier
+        if(temp1 != null){
+            newList.next = new Node(temp1.value);
+        }
+
+        if(temp2 != null){
+            newList.next = new Node(temp2.value);
+        }
+
+        //A cleaner way to do this will be to take a temp variable and point one node of 1 list to next node of second list and vice-versa (Kunal's soln)
+        //That way is also much better because it saves a lot of space upfront
+    }
+
+    public boolean isPalindrome(){
+        if(this.head == null) return true; //empty list is considered palindrome here
+        boolean isPalindrome = true;
+
+        display(this.head); //initial LL
+
+        //1. find the middle of the LL
+        Node prevMid = getPrevMid(this.head);
+
+        //2. reverse the second half of the LL (from mid-position)
+        prevMid.next = reverseIterationWithReturn(prevMid.next);
+        display(this.head); //LL with half reversed
+
+        //3. compare the first and second half of the LL - if they are same, it's palindrome
+        Node temp = this.head;
+        Node mid = prevMid.next; //this is the start of the reversed LL in the middle
+        while (temp != null && mid != null && temp != prevMid.next){ //temp != prevMid.next ensures that we don't keep on repeating after unique of elements are already compared
+            System.out.println("Temp: " + temp.value + ", Mid: " + mid.value);
+            if(temp.value != mid.value){
+                isPalindrome = false;
+                break;
+            }
+
+            temp = temp.next;
+            mid = mid.next;
+        }
+
+        //4. re-reverse the second half of the LL
+        prevMid.next = reverseIterationWithReturn(prevMid.next);
+
+        display(this.head); //LL after re-reversing from the mid part
+        return isPalindrome;
+    }
+
+
     public void reverse(SinglyLinkedList sll, String reverseType, int left, int right){
         if(reverseType.equalsIgnoreCase("recursiveWithTail")){
             recursiveReversalWithTail(this.head);
@@ -25,6 +106,23 @@ public class SinglyLinkedList {
         }else if(reverseType.equalsIgnoreCase("reverseItrLimits")){
             reverseIteration(this.head, left, right);
         }
+    }
+
+    private Node reverseIterationWithReturn(Node node){
+        if(node == null) return null; //node here refers to head
+
+        Node prev = null;
+        Node current = node;
+        Node next = current.next;
+
+        while(current != null){
+            current.next = prev;
+            prev = current;
+            current = next;
+            if(next != null)
+                next = next.next;
+        }
+        return prev; //prev is returned which consists the reversed node from where LL starts
     }
 
     private void reverseIteration(Node node){
@@ -296,6 +394,16 @@ public class SinglyLinkedList {
         Node mid = prevMid.next; //if there is one element in the list, only then prevMid will remain null - that won't happen since calling func is check in this case
         prevMid.next = null;
         return mid;
+    }
+
+    //returns the node just before mid (helps in cases where we want to work with mid node)
+    private Node getPrevMid(Node head){
+        Node prevMid = null;
+        while(head != null && head.next != null){
+            prevMid = (prevMid == null) ? head : prevMid.next; //this will put prevMid as head after first while check/iteration. As slow pointer this would be an element ahead. Hence prevMid (since it's one pointer before) - it will point to 1 element before mid
+            head = head.next.next;
+        }
+        return prevMid;
     }
 
     public int getFirst(){
