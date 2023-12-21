@@ -1,4 +1,4 @@
-package com.bipul.datastructures.stacksqueues.custom;
+package com.bipul.datastructures.stacksqueues.implementation;
 
 public class DynamicStack extends Stack{
     public DynamicStack(){

@@ -2,25 +2,36 @@ package com.bipul.datastructures;
 
 import com.bipul.datastructures.stacksqueues.questions.QueueUsingStacksInsertEff;
 import com.bipul.datastructures.stacksqueues.questions.QueueUsingStacksRemoveEff;
+import com.bipul.datastructures.trees.implementation.BinarySearchTree;
+import com.bipul.datastructures.trees.implementation.BinaryTree;
+
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        QueueUsingStacksRemoveEff queue = new QueueUsingStacksRemoveEff();
-        System.out.println("IsEmpty: " + queue.empty());
+        BinaryTree btree = new BinaryTree();
+        btree.preorderTraversal();
+        System.out.println();
+        btree.inorderTraversal();
+        System.out.println();
+        btree.postorderTraversal();
+//        BinarySearchTree bst = new BinarySearchTree();
+//        bst.insert2(20);
+//        bst.insert2(25);
+//        bst.insert2(6);
+//        bst.insert2(8);
+//        bst.insert2(11);
+//        bst.insert2(2);
+//        bst.display();
 
-        queue.push(12);
-        queue.push(13);
-        queue.push(14);
-        queue.push(17);
-        System.out.println("Peek2: " + queue.peek());
-
-        System.out.println("Pop: " + queue.pop());
-        System.out.println("Peek3: " + queue.peek());
-
-        System.out.println("Pop: " + queue.pop());
-        System.out.println("Peek4: " + queue.peek());
-
+//        BinarySearchTree bst = new BinarySearchTree();
+//        int[] arr = new int[10];
+//        for (int i = 0; i < arr.length; i++) {
+//            arr[i] = i+1;
+//        }
+//        bst.insertSortedArr(arr);
+//        bst.display();
     }
 }

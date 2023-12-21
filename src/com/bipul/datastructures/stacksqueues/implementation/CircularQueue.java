@@ -1,6 +1,4 @@
-package com.bipul.datastructures.stacksqueues.custom;
-
-import java.util.Arrays;
+package com.bipul.datastructures.stacksqueues.implementation;
 
 public class CircularQueue{
 

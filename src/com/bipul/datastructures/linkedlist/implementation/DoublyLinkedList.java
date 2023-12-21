@@ -1,4 +1,4 @@
-package com.bipul.datastructures.linkedlist.custom;
+package com.bipul.datastructures.linkedlist.implementation;
 
 public class DoublyLinkedList {
 

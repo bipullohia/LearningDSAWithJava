@@ -1,4 +1,4 @@
-package com.bipul.datastructures.stacksqueues.custom;
+package com.bipul.datastructures.stacksqueues.implementation;
 
 public class Queue {
     private static final int DEFAULT_SIZE = 10;

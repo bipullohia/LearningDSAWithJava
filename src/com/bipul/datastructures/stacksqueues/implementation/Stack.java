@@ -1,6 +1,5 @@
-package com.bipul.datastructures.stacksqueues.custom;
+package com.bipul.datastructures.stacksqueues.implementation;
 
-import java.util.Arrays;
 import java.util.EmptyStackException;
 
 public class Stack {
