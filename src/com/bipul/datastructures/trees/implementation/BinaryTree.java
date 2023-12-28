@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class BinaryTree {
 
-    private Node root;
+    protected Node root;
 
     public void preorderTraversal(){
-        getSampleTree();
+        createSampleTree();
         preorderTraversal(root);
     }
 
@@ -22,7 +22,7 @@ public class BinaryTree {
     }
 
     public void inorderTraversal(){
-        getSampleTree();
+        createSampleTree();
         inorderTraversal(root);
     }
 
@@ -37,7 +37,7 @@ public class BinaryTree {
     }
 
     public void postorderTraversal(){
-        getSampleTree();
+        createSampleTree();
         postorderTraversal(root);
     }
 
@@ -78,12 +78,51 @@ public class BinaryTree {
         }
     }
 
-    private void getSampleTree(){
+    public void createSampleBST(){
+        this.root = new Node(10);
+        root.left = new Node(5);
+        root.right = new Node(20);
+        root.left.left = new Node(3);
+        root.left.right = new Node(6);
+        root.right.left = new Node(15);
+        root.right.right = new Node(30);
+        root.left.left.left = new Node(1);
+        root.right.left.left = new Node(12);
+        root.right.right.left = new Node(25);
+        root.right.right.right = new Node(40);
+    }
+
+    public void createSimpleSampleTree(){
+        this.root = new Node(5);
+        root.left = new Node(4);
+        root.right = new Node(6);
+        root.left.left = new Node(2);
+        root.left.right = new Node(11);
+        root.right.left = new Node(3);
+        root.right.right = new Node(7);
+    }
+
+    public void createSimpleSampleTree2(){
+        this.root = new Node(-10);
+        root.left = new Node(9);
+        root.right = new Node(20);
+        root.right.left = new Node(15);
+        root.right.right = new Node(7);
+    }
+
+    public void createSampleTree(){
         this.root = new Node(10);
         root.left = new Node(20);
         root.left.left = new Node(15);
+        root.left.left.left = new Node(23);
         root.left.right = new Node(13);
+        root.left.right.left = new Node(22);
+        root.left.right.left.left = new Node(24);
+        root.left.right.left.left.right = new Node(28);
+        root.left.right.right = new Node(25);
         root.right = new Node(12);
+        root.right.right = new Node(43);
+        root.right.left = new Node(16);
     }
 
     //displays using the root node of the object
@@ -101,13 +140,18 @@ public class BinaryTree {
     }
 
     //the node structure for tree
-    private class Node {
-        private int value;
-        private Node left;
-        private Node right;
+    protected class Node {
+        public int value;
+        public Node left;
+        public Node right;
 
         public Node(int value){
             this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
         }
     }
 }
