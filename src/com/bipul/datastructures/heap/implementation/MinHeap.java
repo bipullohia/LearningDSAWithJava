@@ -1,7 +1,6 @@
 package com.bipul.datastructures.heap.implementation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MinHeap<T extends Comparable<T>> { //we can similarly create Heaps for Max/ etc.
     ArrayList<T> arrList;
@@ -111,6 +110,10 @@ public class MinHeap<T extends Comparable<T>> { //we can similarly create Heaps 
         T temp = arrList.get(index1);
         arrList.set(index1, arrList.get(index2));
         arrList.set(index2, temp);
+    }
+
+    public int size(){
+        return arrList.size();
     }
 
     //ideally shouldn't be open for public
