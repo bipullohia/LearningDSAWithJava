@@ -1,26 +1,19 @@
 package com.bipul;
 
-import java.util.Scanner;
+import com.bipul.sorting.CountSort;
+import com.bipul.sorting.RadixSort;
+
+import java.util.Arrays;
+
 
 public class Main {
 
     public static void main(String[] args) {
 
-        //output
-        System.out.println("Hello world!");
-
-        //input
-        Scanner inputScanner = new Scanner(System.in); //System.in means we are taking input from the keyboard
-        int rollNo = inputScanner.nextInt(); // other options like inputScanner.nextFloat() are possible
-        System.out.println(rollNo);
-
-        //type casting
-        int num = (int) 67.67f;
-        System.out.println(num);
-
-        //automatic type promotion in expressions
-        int a = 257;
-        byte b = (byte) a;
-        System.out.println(b);
+        RadixSort sort = new RadixSort();
+        int[] arr = {29,83,471,3666,91,8};
+        System.out.println(Arrays.toString(arr));
+        sort.radixSort(arr);
+        System.out.println(Arrays.toString(arr));
     }
 }
