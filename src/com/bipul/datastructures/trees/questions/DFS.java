@@ -4,6 +4,7 @@ import com.bipul.datastructures.trees.implementation.BinaryTree;
 
 import java.util.*;
 
+
 public class DFS extends BinaryTree {
 
     public DFS(){}
@@ -209,13 +210,14 @@ public class DFS extends BinaryTree {
     }
 
     //create a binary tree from 2 arrays of preorder traversal and inorder traversal
+    //ADV POSSIBLE!! this same ques can be done better with advanced DS!
     private Node buildTree(int[] preArr, int[] inArr){
         if(preArr.length == 0 || inArr.length == 0) return null;
 
         //finding the root node from preorder (first element)
         Node node = new Node(preArr[0]);
 
-        //finding the left and right portions of the above root from inorder
+        //finding the left and right portions of the above root from inorder - can be converted to constant time if we use a HashMap to store indices of values (check next soln)
         int index = 0; //current root index
         for (int i = 0; i < inArr.length; i++) {
             if(node.value == inArr[i])
@@ -228,10 +230,46 @@ public class DFS extends BinaryTree {
         return node;
     }
 
+    //same ques as above, using advanced DS
+    //Time Complexity -> iterate 1 time in pre and in -> O(n), Space -> O(n) for the hashmap made
+    public void treeFromPreAndInAdv(int[] preArr, int[] inArr){
+        //create hashmap for storing inorder items and their index - helps us save space by not traversing the inorder array
+        HashMap<Integer, Integer> inorderMap = new HashMap<>();
+        for (int i = 0; i < inArr.length; i++) {
+            inorderMap.put(inArr[i], i); //stores value and it's index
+        }
+        int[] index = {0};
+        super.root = buildTreeAdv(preArr, inArr, 0, preArr.length-1, index, inorderMap);
+    }
+
+    //uses left and right int instead of passing the entire arrays, and we traverse preorder arr 1 by 1 via recursion
+    private Node buildTreeAdv(int[] preArr, int[] inArr, int left, int right, int[] index, HashMap<Integer, Integer> map){
+        if(left > right){
+            return null;
+        }
+
+        //new node for this recurse - always use preArr for this using the index
+        Node node = new Node(preArr[index[0]]);
+        index[0]++; //we have to make sure we increase this index before returning leaf node -> for next element to get populated
+        //we take array for ref variable thing -> so that we know it will increase
+        if(left == right){ //we are the lead node, return this node (no left/right will be there)
+            return node;
+        }
+
+        //there are more than 1 element in this recurse, find the index in the inArr using hashmap
+        //this will be used to decide left and right division for the next recursive funcs
+        int inorderIndex = map.get(node.value);
+
+        //keep in mind, here we pass the new left and right indices and the inArr as is
+        node.left = buildTreeAdv(preArr, inArr, left, inorderIndex-1, index, map);
+        node.right = buildTreeAdv(preArr, inArr, inorderIndex+1, right, index, map);
+
+        return node;
+    }
+
     public List<Integer> getSerializedTree(){
         return getSerializedTree(super.root);
     }
-
     //traverse preorder
     private List<Integer> getSerializedTree(Node node){
         List<Integer> result = new ArrayList<>();
@@ -372,4 +410,5 @@ public class DFS extends BinaryTree {
     private int allPathSums(Node node, int sum){
         return 0;
     }
+
 }

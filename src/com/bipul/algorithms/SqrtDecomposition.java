@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class SqrtDecomposition {
 
     //find the sum of range in the given query - similar technique for other range queries
+    //can be used for any rule based range question
     public int rangeQuery(int[] arr, int l, int r){
         int len = arr.length;
 

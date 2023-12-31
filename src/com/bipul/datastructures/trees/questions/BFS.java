@@ -329,4 +329,47 @@ public class BFS extends BinaryTree {
         root.left.right = new Node(8);
         root.right.right = new Node(8);
     }
+
+    public void printVerticalTree(){
+        List<List<Integer>> result = printVerticalTree(super.root);
+        System.out.println(result.toString());
+    }
+
+    //we go from left to right - search on each level - better to use BFS
+    public List<List<Integer>> printVerticalTree(Node root){
+        List<List<Integer>> result = new ArrayList<>();
+        if(root == null) return result;
+
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+        //PS: remember this if we want to create a new type of map for temporary purpose
+        Queue<Map.Entry<Node, Integer>> queue = new ArrayDeque<>(); //for storing left and right children as we pass along
+        queue.offer(new AbstractMap.SimpleEntry<>(root, 0));  //col value for root is 0
+        int min = 0;
+        int max = 0;
+
+        while(!queue.isEmpty()){
+            Map.Entry<Node, Integer> removedEntry = queue.poll();
+            Node node = removedEntry.getKey();
+            int col = removedEntry.getValue();
+
+            if(node != null){
+                ArrayList<Integer> list = map.getOrDefault(col, new ArrayList<>());
+                list.add(node.value);
+                map.put(col, list);
+                min = Math.min(min, col);
+                max = Math.max(max, col);
+
+                //adding left and right child to the queue
+                queue.offer(new AbstractMap.SimpleEntry<>(node.left, col-1));
+                queue.offer(new AbstractMap.SimpleEntry<>(node.right, col+1));
+            }
+        }
+
+        //traverse from min to max and insert in the final result
+        for (int i = min; i <= max; i++) {
+            result.add(map.get(i));
+        }
+        return result;
+    }
+
 }
