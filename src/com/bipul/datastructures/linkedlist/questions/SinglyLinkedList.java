@@ -577,6 +577,48 @@ public class SinglyLinkedList {
         return ans;
     }
 
+    public void removeNodesWithVal(int val){
+        head = removeNodesWithValIter(head, val);
+    }
+
+    //great for time complexity, poor for space complexity since stack is taking a lot of space
+    private Node removeNodesWithVal(Node node, int val){
+        if(node == null) return null;
+
+        if(node.value == val){
+            return removeNodesWithVal(node.next, val);
+        }
+
+        node.next = removeNodesWithVal(node.next, val);
+        return node;
+    }
+
+    private Node removeNodesWithValIter(Node head, int val){
+        if(head == null) return null;
+
+        Node prev = null;
+        Node curr = head;
+
+        while(curr != null){
+            if(curr.value == val){
+                //if prev is null -> we are in the head node
+                if(prev == null){
+                    head = head.next;
+                    curr = head;
+                }else{
+                    //prev isn't null
+                    prev.next = curr.next;
+                    curr = curr.next;
+                }
+                continue;
+            }
+
+            prev = curr;
+            curr = curr.next;
+        }
+
+        return head;
+    }
 
     //creating a new singly linked list with a cycle (for testing)
     public SinglyLinkedList getSLLWithCycle(){
@@ -594,14 +636,38 @@ public class SinglyLinkedList {
         return sll;
     }
 
+    public int getNum(){
+        return getNum(head, 0);
+    }
+    //2 -> 4 -> 3 will denote 342, retrieve 342 from a given LL
+    private int getNum(Node node, int factor){
+        if(node == null) return 0;
+        return node.value*(int)(Math.pow(10, factor)) + getNum(node.next, ++factor);
+    }
+
+    //creating a new singly linked list with a cycle (for testing)
+    public void createSimpleLL(){
+        head = new Node(1);
+        head.next = new Node(9);
+        head.next.next = new Node(9);
+        head.next.next.next = new Node(9);
+        head.next.next.next.next = new Node(9);
+        head.next.next.next.next.next = new Node(9);
+        head.next.next.next.next.next.next = new Node(9);
+        head.next.next.next.next.next.next.next = new Node(9);
+        head.next.next.next.next.next.next.next.next = new Node(9);
+        head.next.next.next.next.next.next.next.next = new Node(9);
+        size = 10;
+    }
+
     //write a demo LL with a tail
     public SinglyLinkedList getListWithTail(){
-        this.head = new Node(12);
-        this.head.next = new Node(14);
-        this.head.next.next = new Node(16);
-        this.head.next.next.next = new Node(18);
-        this.head.next.next.next.next = new Node(20);
-        this.head.next.next.next.next.next = new Node(22);
+        this.head = new Node(1);
+        this.head.next = new Node(2);
+        this.head.next.next = new Node(6);
+        this.head.next.next.next = new Node(3);
+        this.head.next.next.next.next = new Node(4);
+        this.head.next.next.next.next.next = new Node(6);
 
         this.tail = this.head.next.next.next.next.next;
         this.size = 6;
