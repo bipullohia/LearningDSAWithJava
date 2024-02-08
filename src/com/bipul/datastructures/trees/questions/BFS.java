@@ -335,7 +335,7 @@ public class BFS extends BinaryTree {
         System.out.println(result.toString());
     }
 
-    //we go from left to right - search on each level - better to use BFS
+    //we go from left to right - search on each level - better to use Bfs Dfs
     public List<List<Integer>> printVerticalTree(Node root){
         List<List<Integer>> result = new ArrayList<>();
         if(root == null) return result;

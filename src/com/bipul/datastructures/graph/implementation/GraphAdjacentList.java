@@ -1,7 +1,6 @@
 package com.bipul.datastructures.graph.implementation;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 
 public class GraphAdjacentList<T> {
     //Adjacent list is great for sparse graphs
@@ -87,8 +86,49 @@ public class GraphAdjacentList<T> {
         return false;
     }
 
+    public List<T> bfsTraversal(){
+        List<T> result = new LinkedList<>();
+        HashSet<Node<T>> visited = new HashSet<>();
+        Queue<Node<T>> queue = new LinkedList<>();
+        for(Node<T> node: nodeList){ //this loop helps cover disconnected graphs too
+            queue.offer(node);
+            while(!queue.isEmpty()){
+                Node<T> polled = queue.poll();
+                //check if the node has been visited already
+                if(!visited.contains(polled)){
+                    //it's not -> put it in the visited map
+                    visited.add(polled);
+
+                    result.add(polled.value);
+                    for(int index: polled.adjacentList){
+                        queue.add(nodeList.get(index));
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<T> dfsTraversal(){
+        List<T> result = new LinkedList<>();
+        HashSet<Node<T>> visited = new HashSet<>();
+        for(Node<T> node: nodeList) { //this loop helps cover disconnected graphs too
+            dfs(node, visited, result);
+        }
+        return result;
+    }
+
+    private void dfs(Node<T> node, HashSet<Node<T>> visited, List<T> result){
+        if(!visited.contains(node)){
+            visited.add(node);
+            result.add(node.value);
+            for(int index: node.adjacentList){
+                dfs(nodeList.get(index), visited, result);
+            }
+        }
+    }
+
     public void printAdjacencyListGraph(){
-        System.out.println("****** Adjacency List Representation of the Graph ******");
         for (Node<T> tNode : nodeList) {
             System.out.print("Node: " + tNode.value + ", Neighbours: ");
             for (Integer index : tNode.adjacentList) {
@@ -110,15 +150,24 @@ public class GraphAdjacentList<T> {
             this.value = value;
             this.adjacentList = new LinkedList<>();
         }
-
-        public K getValue() {
-            return value;
-        }
-
-        //stores indexes instead of the actual copy of the value
-        public LinkedList<Integer> getAdjacentList() {
-            return adjacentList;
-        }
     }
+
+    /*
+    public void createSampleGraph() throws Exception {
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+        graph.addNode("D");
+        graph.addNode("E");
+        graph.addNode("F");
+
+        graph.addEdge("A", "B");
+        graph.addEdge("A", "C");
+        graph.addEdge("A", "D");
+        graph.addEdge("E", "B");
+        graph.addEdge("F", "B");
+        graph.addEdge("F", "C");
+    }
+     */
 
 }

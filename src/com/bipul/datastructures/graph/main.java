@@ -32,16 +32,20 @@ public class main {
         graph.addEdge("H", "F");
         graph.addEdge("H", "G");
 
-        System.out.println("Is connected - C and H: " + graph.isConnected("C", "H"));
-        System.out.println("Is connected - H and G: " + graph.isConnected("H", "G"));
-        System.out.println("Is connected - G and H: " + graph.isConnected("G", "H"));
-        System.out.println("Is connected - A and D: " + graph.isConnected("A", "D"));
-
-        System.out.println("Neighbours of A: " + graph.getAdjacentNodes("A"));
-        System.out.println("Neighbours of F: " + graph.getAdjacentNodes("F"));
-        System.out.println("Neighbours of H: " + graph.getAdjacentNodes("H"));
-        System.out.println("Neighbours of C: " + graph.getAdjacentNodes("C"));
+//        System.out.println("Is connected - C and H: " + graph.isConnected("C", "H"));
+//        System.out.println("Is connected - H and G: " + graph.isConnected("H", "G"));
+//        System.out.println("Is connected - G and H: " + graph.isConnected("G", "H"));
+//        System.out.println("Is connected - A and D: " + graph.isConnected("A", "D"));
+//
+//        System.out.println("Neighbours of A: " + graph.getAdjacentNodes("A"));
+//        System.out.println("Neighbours of F: " + graph.getAdjacentNodes("F"));
+//        System.out.println("Neighbours of H: " + graph.getAdjacentNodes("H"));
+//        System.out.println("Neighbours of C: " + graph.getAdjacentNodes("C"));
 
         graph.printAdjacencyListGraph();
+
+        System.out.println(graph.bfsTraversal());
+
+        System.out.println(graph.dfsTraversal());
     }
 }
